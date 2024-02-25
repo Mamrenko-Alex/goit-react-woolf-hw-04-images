@@ -10,7 +10,6 @@ export const App = () => {
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isMore, setIsMore] = useState(false);
-  const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
@@ -30,7 +29,7 @@ export const App = () => {
         ]);
         setIsMore(currentPage < Math.ceil(totalHits / 12));
       } catch (error) {
-        setError(error);
+        console.error(error);
       } finally {
         setIsLoading(false);
       }
@@ -46,7 +45,6 @@ export const App = () => {
     setImages([]);
     setIsLoading(false);
     setIsMore(false);
-    setError(null);
     setCurrentPage(1);
   };
 
