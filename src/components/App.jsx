@@ -22,11 +22,7 @@ export const App = () => {
         setIsLoading(true);
         const { hits, totalHits } = await getImages(query, currentPage);
 
-        setImages(prevImages => [
-          ...prevImages,
-          // Прибираємо дублі з бекенду, щоб key був унікальним для кожного елементу в ul
-          ...hits.filter(hit => !prevImages.some(image => image.id === hit.id)),
-        ]);
+        setImages(prevImages => [...prevImages, ...hits]);
         setIsMore(currentPage < Math.ceil(totalHits / 12));
       } catch (error) {
         console.error(error);
