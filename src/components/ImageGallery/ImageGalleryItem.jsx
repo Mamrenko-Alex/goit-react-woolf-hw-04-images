@@ -1,41 +1,27 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Modal } from '../Modal/Modal';
 import styles from './ImageGallery.module.css';
+import { useToggle } from '../../my_hooks/useToggle';
 
-export class ImageGalleryItem extends Component {
-  state = {
-    isModalOpen: false,
-  };
+export const ImageGalleryItem = ({ URL, largeURL, description, id }) => {
+  const { isModalOpen, open, toggle } = useToggle();
 
-  toggleModal = () => {
-    this.setState(prev => ({ isModalOpen: !prev.isModalOpen }));
-  };
-
-  render() {
-    const { URL, largeURL, description, id } = this.props;
-    const { isModalOpen } = this.state;
-
-    return (
-      <>
-        <li
+  return (
+    <>
+      <li className={styles.image_gallery_item} onClick={open} id={id}>
+        <img
           className={styles.image_gallery_item}
-          onClick={this.toggleModal}
-          id={id}
-        >
-          <img
-            className={styles.image_gallery_item}
-            src={URL}
-            alt={description}
-          />
-        </li>
-        {isModalOpen && (
-          <Modal
-            imageUrl={largeURL}
-            toggleModal={this.toggleModal}
-            description={description}
-          />
-        )}
-      </>
-    );
-  }
-}
+          src={URL}
+          alt={description}
+        />
+      </li>
+      {isModalOpen && (
+        <Modal
+          imageUrl={largeURL}
+          toggleModal={toggle}
+          description={description}
+        />
+      )}
+    </>
+  );
+};

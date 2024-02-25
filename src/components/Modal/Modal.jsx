@@ -1,37 +1,33 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 
-export class Modal extends Component {
-  componentDidMount() {
-    document.addEventListener('keydown', this.handleKeyDown);
+export const Modal = ({ toggleModal, imageUrl, description }) => {
+  useEffect(() => {
+    const handleKeyDown = event => {
+      if (event.code === 'Escape') {
+        toggleModal();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
     document.body.style.overflow = 'hidden';
-  }
 
-  componentWillUnmount() {
-    document.removeEventListener('keydown', this.handleKeyDown);
-    document.body.style.overflow = 'auto';
-  }
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'auto';
+    };
+  }, [toggleModal]);
 
-  handleKeyDown = event => {
-    if (event.code === 'Escape') {
-      this.props.toggleModal();
-    }
-  };
-
-  handleOverlayClick = event => {
+  const handleOverlayClick = event => {
     if (event.target === event.currentTarget) {
-      this.props.toggleModal();
+      toggleModal();
     }
   };
 
-  render() {
-    const { imageUrl, description } = this.props;
-
-    return (
-      <div className="overlay" onClick={this.handleOverlayClick}>
-        <div className="modal">
-          <img src={imageUrl} alt={description} />
-        </div>
+  return (
+    <div className="overlay" onClick={handleOverlayClick}>
+      <div className="modal">
+        <img src={imageUrl} alt={description} />
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
